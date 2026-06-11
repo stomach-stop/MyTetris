@@ -1,8 +1,10 @@
 import { eventBus } from "../common/EventBus.js";
+import { ReplayRecorder } from "./ReplayRecorder.js";
 
 export class InputHandler{ //入力処理
     constructor(manager) {
         this.game = manager.game;
+        this.recorder = new ReplayRecorder();
 
         this.pressed = {}; //キーの状態
         this.DAS = 150; //連続移動の遅延
@@ -34,7 +36,7 @@ export class InputHandler{ //入力処理
     }
 
     handle(key) { //操作命令
-        switch (key) { //キーごとの操作
+        switch(key) { //キーごとの操作
             case "w": this.game.hardDrop(); break;
             case "a": this.game.moveLeft(); break;
             case "s": this.game.softDrop(); break;
@@ -44,7 +46,9 @@ export class InputHandler{ //入力処理
             case "c": this.game.swapHold(); break;
             case "z": eventBus.emit("undo"); break;
         }
-        this.game.updateGhost();
+
+        this.recorder.record(performance.now(), key); //記録
+        console.log(performance.now(), key);
     }
 
     onKeyDown(key) { //キーの入力処理

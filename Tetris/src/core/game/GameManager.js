@@ -6,12 +6,14 @@ import { SettingState } from "../../state/SettingState.js";
 import { UndoManager } from "./UndoManager.js";
 
 export class GameManager { //ゲームの状態遷移
-    constructor(){ //初期設定
-        this.board = new Board();
-        this.game = new Game(this.board);
-        this.undo = new UndoManager(this.game);
+    constructor(setting) { //初期設定
+        this.setting = setting;
 
-        this.state = new MenuState();
+        this.board = new Board();
+        this.game = new Game(this.setting, this.board);
+        this.undo = new UndoManager(this.game);
+        
+        this.state = new PlayState();
         this.state.enter(this);
     }
 

@@ -2,7 +2,7 @@ import { State } from "./State.js";
 import { GameRenderer } from "../renderer/GameRenderer.js";
 import { switchScreen } from "../../main.js";
 
-export class PlayState extends State {
+export class ReplayState extends State {
     enter(manager) {
         switchScreen("game");
         this.renderer = new GameRenderer(manager.board);

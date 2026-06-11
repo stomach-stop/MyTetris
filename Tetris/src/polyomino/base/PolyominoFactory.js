@@ -13,6 +13,4 @@ export class Factory { //Factoryパターン
         const type = this._strategy.nextType(this.shapes);
         return this.create(type);
     }
-
-    set strategy(v) { this._strategy = v; }
 }

@@ -1,57 +1,63 @@
 export class PolyManager { //ブロックの出現制御
     constructor(board, factory) {
         this.board = board;
-        this._factory = factory;
+        this.factory = factory;
 
-        this._current = this._factory.createNext(); //現在のブロック
-        this._next = this._factory.createNext(); //次のブロック
-        this._hold = null; //ホールド枠
+        this.current = this.factory.createNext(); //現在のブロック
+        this.next = this.factory.createNext(); //次のブロック
+        this.hold = null; //ホールド枠
         this.canHold = true; //ホールド可能か
-        this._ghost; //ブロックの影
+        this.ghost = null; //ブロックの影
         this.updateGhost();
     }
 
     spawnNext() { //次のブロックを生成
-        this._current = this._next;
-        this._next = this._factory.createNext();
+        this.current = this.next;
+        this.next = this.factory.createNext();
         this.canHold = true;
         this.updateGhost();
     }
 
     swapHold() { //ホールド枠のブロックと交換
         if (this.canHold) {
-            if (this._hold != null) {
-                const tmp = this._hold;
-                this._hold = this._current;
-                this._current = tmp;
+            if (this.hold != null) {
+                const tmp = this.hold;
+                this.hold = this.current;
+                this.current = tmp;
             } else {
-                this._hold = this._current;
+                this.hold = this.current;
                 this.spawnNext();
             }
             
-            this._current.x = 4;
-            this._current.y = 0;
+            this.current.x = 4;
+            this.current.y = 0;
             this.canHold = false;
+            this.updateGhost();
         }
     }
 
     updateGhost() { //ブロックの影を更新
-        let clone = this._current.clone();
+        let clone = this.current.clone();
         while (this.board.canPlace(clone.cloneMoved(0, 1))) {
             clone = clone.cloneMoved(0, 1);
         }
-        this._ghost = clone;
+        this.ghost = clone;
     }
 
-    //ゲッターセッター
-    get current() { return this._current; }
-    set current(v) { this._current = v; }
+    createMemento() {
+        return {
+            current: this.current.clone(),
+            next: this.next.clone(),
+            hold: this.hold?.clone() ?? null,
+            ghost: this.ghost.clone()
+        };
+    }
 
-    get next() { return this._next; }
-    set next(v) { this._next = v; }
-
-    get hold() { return this._hold; }
-    set hold(v) { this._hold = v; }
-
-    get ghost() { return this._ghost; }
+    restore(memento) {
+        this.current = memento.current.clone();
+        this.next = memento.next.clone();
+        this.hold = memento.hold ? memento.hold.clone() : null;
+        this.ghost = memento.ghost.clone();
+        this.updateGhost();
+    }
 }

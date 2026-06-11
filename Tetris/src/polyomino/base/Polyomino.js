@@ -79,6 +79,7 @@ export class Polyomino{ //ブロックの情報を取得
                 return moved;
             }
         }
+        return this;
     }
 
     rotateLeft(board) { //左回転
@@ -96,5 +97,6 @@ export class Polyomino{ //ブロックの情報を取得
                 return moved;
             }
         }
+        return this;
     }
 }

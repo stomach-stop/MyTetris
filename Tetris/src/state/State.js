@@ -1,4 +1,4 @@
-export class State{ //Stateパターン
+export class State {
     enter(manager){ //状態に入ったときの処理
         throw new Error("enter method must be implemented.");
     }

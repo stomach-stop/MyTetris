@@ -1,10 +1,12 @@
 import { GameManager } from "./src/core/game/GameManager.js";
+import { GameSetting } from "./src/core/game/GameSetting.js";
 import { InputHandler } from "./src/core/input/InputHandler.js";
 
 let canvas;
 let ctx;
 let tileSize;
 
+let setting;
 let manager;
 let handler;
 let lastTime = 0;
@@ -17,7 +19,8 @@ function init() { //初期化
     ctx = canvas.getContext("2d");
 
     createDisplay();
-    manager = new GameManager();
+    setting = new GameSetting();
+    manager = new GameManager(setting);
     handler = new InputHandler(manager);
 
     setupUI();
@@ -86,3 +89,5 @@ export function switchScreen(id) {
         .classList.remove("hidden");
     }
 }
+
+//(Get-ChildItem -Recurse -Filter *.js | Get-Content).Count
