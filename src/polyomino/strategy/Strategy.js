@@ -1,9 +1,9 @@
-export class Strategy{
+export class Strategy {
     constructor(rand) {
         this.rand = rand;
     }
     
-    nextType(shapes){
+    nextType(shapes) {
         throw new Error("nextType method must be implemented");
     }
 }

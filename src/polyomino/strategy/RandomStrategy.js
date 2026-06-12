@@ -1,4 +1,4 @@
-import { Strategy } from "./strategy.js";
+import { Strategy } from "./Strategy.js";
 
 export class RandomStrategy extends Strategy {
     constructor(rand) {
